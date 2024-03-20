@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60273294401",
+    "project_id": "techzette-ee5b3",
+    "storage_bucket": "techzette-ee5b3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60273294401:android:5a09475085f21754e5dac0",
+        "android_client_info": {
+          "package_name": "com.example.techzette"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYck0uI3KaQob60UNmgBLtvdnQABam7U8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
