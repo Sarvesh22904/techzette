@@ -13,7 +13,7 @@ class Techzette extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return (const MaterialApp(
-        title: "VCET TechZette",
+        title: "VCET ",
         debugShowCheckedModeBanner: false,
         home: TechzettePage1()));
   }
