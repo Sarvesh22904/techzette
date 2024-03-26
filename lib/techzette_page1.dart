@@ -23,11 +23,19 @@ class TechzettePage1 extends StatelessWidget {
         onTap: () {
           _navigateToNextPage(context);
         },
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              Image.asset(
+                'assets/vcet_nsdc.jpg',
+                height: 200,
+                width: 200,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Text(
                 "Welcome to Techzette",
                 style: TextStyle(
                   color: Colors.black,
@@ -35,8 +43,8 @@ class TechzettePage1 extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
-              Text(
+              const SizedBox(height: 20),
+              const Text(
                 "Tap to Continue",
                 style: TextStyle(
                   color: Colors.blue,
