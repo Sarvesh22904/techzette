@@ -28,7 +28,7 @@ class TechzettePage1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/vcet_nsdc.jpg',
+                'assets/vcet-logo.jpeg',
                 height: 200,
                 width: 200,
               ),
