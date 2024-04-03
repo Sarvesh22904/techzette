@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart'; // For Firebase Storage
 
 class UploadPage extends StatelessWidget {
   @override
@@ -7,13 +9,38 @@ class UploadPage extends StatelessWidget {
     // Function to be called when the button is pressed
     Future<void> onUploadButtonPressed() async {
       try {
-        FilePickerResult? result = await FilePicker.platform.pickFiles();
+        FilePickerResult? result = await FilePicker.platform
+            .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
         if (result != null) {
           PlatformFile file = result.files.first;
-          print(file.path);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Selected file: ${file.name}')),
-          );
+
+          // Create a File object
+          File pdfFile = File(file.path!);
+
+          // Upload file
+          String fileName = file.name;
+          try {
+            // Define the file path in Firebase Storage
+            String filePath = 'articles/$fileName';
+            // Get a reference to the Firebase Storage instance
+            Reference ref = FirebaseStorage.instance.ref().child(filePath);
+
+            // Upload the file
+            UploadTask uploadTask = ref.putFile(pdfFile);
+
+            // Get the download URL
+            final TaskSnapshot downloadUrl = await uploadTask;
+            final String url = await downloadUrl.ref.getDownloadURL();
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('File uploaded successfully: $url')),
+            );
+          } catch (e) {
+            print(e); // Print any errors to the console.
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Failed to upload file: $e')),
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('No file selected')),
