@@ -1,84 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart'; // For Firebase Storage
+import 'package:firebase_storage/firebase_storage.dart';
+import 'pdfviewer_page.dart';
+import 'package:techzette/uploaded_file.dart';
 
-class UploadPage extends StatelessWidget {
+class UploadPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    // Function to be called when the button is pressed
-    Future<void> onUploadButtonPressed() async {
-      try {
-        FilePickerResult? result = await FilePicker.platform
-            .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
-        if (result != null) {
-          PlatformFile file = result.files.first;
+  _UploadPageState createState() => _UploadPageState();
+}
 
-          // Create a File object
-          File pdfFile = File(file.path!);
+class _UploadPageState extends State<UploadPage> {
+  List<UploadedFile> uploadedFiles = []; // Use the UploadedFile class
 
-          // Upload file
-          String fileName = file.name;
-          try {
-            // Define the file path in Firebase Storage
-            String filePath = 'articles/$fileName';
-            // Get a reference to the Firebase Storage instance
-            Reference ref = FirebaseStorage.instance.ref().child(filePath);
+  Future<void> onUploadButtonPressed() async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
+      );
+      if (result != null) {
+        PlatformFile file = result.files.first;
+        File pdfFile = File(file.path!);
+        String fileName = file.name;
 
-            // Upload the file
-            UploadTask uploadTask = ref.putFile(pdfFile);
+        String filePath = 'articles/$fileName';
+        Reference ref = FirebaseStorage.instance.ref().child(filePath);
 
-            // Get the download URL
-            final TaskSnapshot downloadUrl = await uploadTask;
-            final String url = await downloadUrl.ref.getDownloadURL();
+        UploadTask uploadTask = ref.putFile(pdfFile);
+        final TaskSnapshot downloadUrl = await uploadTask;
+        final String url = await downloadUrl.ref.getDownloadURL();
 
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('File uploaded successfully: $url')),
-            );
-          } catch (e) {
-            print(e); // Print any errors to the console.
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Failed to upload file: $e')),
-            );
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('No file selected')),
-          );
-        }
-      } catch (e) {
-        print(e); // Print any errors to the console.
+        // Update the state to include the new file with its URL and name
+        setState(() {
+          uploadedFiles.add(UploadedFile(url: url, name: fileName));
+        });
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick file: $e')),
+          SnackBar(content: Text('File uploaded successfully: $url')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No file selected')),
         );
       }
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to pick file: $e')),
+      );
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Upload',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
+        title: const Text('Upload',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
         backgroundColor: Colors.orange,
       ),
-      body: Stack(
-        children: [
-          Positioned(
-            right: 16, // Right padding
-            bottom: 16, // Bottom padding
-            child: ElevatedButton(
-              onPressed: onUploadButtonPressed,
-              child: Icon(Icons.upload_file), // Upload icon
-              style: ElevatedButton.styleFrom(
-                primary: Colors.orange, // Button background color
-                onPrimary: Colors.white, // Button text color
-                shape: CircleBorder(), // Make the button circular
-                padding: EdgeInsets.all(20), // Button padding to make it larger
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 4.0,
+          mainAxisSpacing: 4.0,
+        ),
+        itemCount: uploadedFiles.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    PdfViewerPage(url: uploadedFiles[index].url),
+              ));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.orange),
+              ),
+              child: Center(
+                // Display the original file name
+                child: Text(uploadedFiles[index].name),
               ),
             ),
-          ),
-        ],
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onUploadButtonPressed,
+        child: Icon(Icons.upload_file),
+        backgroundColor: Colors.orange,
       ),
     );
   }
