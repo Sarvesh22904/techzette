@@ -35,16 +35,23 @@ class UploadPage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed:
-              onUploadButtonPressed, // Call the async function when the button is pressed
-          child: Text('Upload'),
-          style: ElevatedButton.styleFrom(
-            primary: Colors.orange, // Button background color
-            onPrimary: Colors.white, // Button text color
+      body: Stack(
+        children: [
+          Positioned(
+            right: 16, // Right padding
+            bottom: 16, // Bottom padding
+            child: ElevatedButton(
+              onPressed: onUploadButtonPressed,
+              child: Icon(Icons.upload_file), // Upload icon
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orange, // Button background color
+                onPrimary: Colors.white, // Button text color
+                shape: CircleBorder(), // Make the button circular
+                padding: EdgeInsets.all(20), // Button padding to make it larger
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
