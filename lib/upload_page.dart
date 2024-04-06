@@ -105,101 +105,75 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Upload',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        backgroundColor: Colors.orange,
-      ),
-<<<<<<< HEAD
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 4.0,
-          mainAxisSpacing: 4.0,
+        appBar: AppBar(
+          title: const Text('Upload',
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+          backgroundColor: Colors.orange,
         ),
-        itemCount: uploadedFiles.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    PdfViewerPage(url: uploadedFiles[index].url),
-              ));
-            },
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.orange),
-              ),
-              child: Center(
-                // Display the original file name
-                child: Text(uploadedFiles[index].name),
-              ),
-=======
-      body: _isUploading
-          ? const Center(child: CircularProgressIndicator())
-          : StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('uploaded_pdfs')
-                  .where('uid',
-                      isEqualTo: user!.uid) // Filter by the current user's UID
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  var documents = snapshot.data!.docs;
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 4.0,
-                      mainAxisSpacing: 4.0,
-                    ),
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      var doc = documents[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                PdfViewerPage(url: doc['url']),
-                          ));
-                        },
-                        child: Card(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                      'assets/pdfLogo1.png'), // PDF logo
+        body: _isUploading
+            ? Center(
+                child:
+                    CircularProgressIndicator()) // Use CircularProgressIndicator for uploading state
+            : StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('uploaded_pdfs')
+                    .where('uid', isEqualTo: user!.uid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else {
+                    var documents = snapshot.data!.docs;
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 4.0,
+                      ),
+                      itemCount: documents.length,
+                      itemBuilder: (context, index) {
+                        var doc = documents[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  PdfViewerPage(url: doc['url']),
+                            ));
+                          },
+                          child: Card(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Image.asset(
+                                        'assets/pdfLogo1.png'), // PDF logo
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                doc['name'],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 14.0),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
+                                Text(
+                                  doc['name'],
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(fontSize: 14.0),
+                                ),
+                                const SizedBox(height: 10),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
->>>>>>> 8ed705c3b074d8a55003cc42c0dbb93ba2a7e906
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onUploadButtonPressed,
-<<<<<<< HEAD
-=======
-        child: const Icon(Icons.upload_file),
->>>>>>> 8ed705c3b074d8a55003cc42c0dbb93ba2a7e906
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.upload_file),
-      ),
-    );
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: onUploadButtonPressed,
+          backgroundColor: Colors.orange,
+          child: const Icon(Icons.upload_file),
+        ));
+    // ignore: dead_code
   }
 }

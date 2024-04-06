@@ -3,34 +3,25 @@ import 'upload_page.dart';
 import 'student_login_page.dart';
 
 class StudentHomePage extends StatefulWidget {
-  const StudentHomePage({super.key});
+  const StudentHomePage({Key? key});
 
   @override
   _StudentHomePageState createState() => _StudentHomePageState();
 }
 
 class _StudentHomePageState extends State<StudentHomePage> {
-  // Function to handle menu option selection
-  void _handleMenuSelection(String value) {
-    switch (value) {
-      case 'Upload':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const UploadPage()),
-        );
-        break;
-      case 'Logout':
-        // Navigate to the StudentLoginPage
-        Navigator.pushReplacement(
-          // Using pushReplacement to prevent returning to the previous screen after logout
-          context,
-          MaterialPageRoute(builder: (context) => StudentPage()),
-        );
-        break;
-      default:
-        // Handle other cases if necessary
-        break;
-    }
+  void _handleUpload() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const UploadPage()),
+    );
+  }
+
+  void _handleLogout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => StudentPage()),
+    );
   }
 
   @override
@@ -43,25 +34,75 @@ class _StudentHomePageState extends State<StudentHomePage> {
         ),
         backgroundColor: Colors.orange,
         actions: <Widget>[
-          // Using PopupMenuButton for the three dots menu
-          PopupMenuButton<String>(
-            onSelected: _handleMenuSelection,
-            itemBuilder: (BuildContext context) {
-              return [
-                const PopupMenuItem<String>(
-                  value: 'Upload',
-                  child: Text('Upload'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'Logout',
-                  child: Text('Logout'),
-                ),
-              ];
-            },
-            icon: const Icon(Icons.more_vert,
-                color: Colors.black), // Three dots icon in black color
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
           ),
         ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 33, 166, 243),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Welcome!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'VCET TECHZETTE',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Profile'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.share),
+              title: Text('Upload'),
+              onTap: _handleUpload,
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About Us'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.folder),
+              title: Text('Articles'),
+              onTap: () {},
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: _handleLogout,
+            ),
+          ],
+        ),
       ),
       body: const Center(
         child: Text("Welcome to the Student Home Page!"),

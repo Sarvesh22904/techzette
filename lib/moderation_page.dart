@@ -32,7 +32,8 @@ class ModerationPage extends StatelessWidget {
                     // Add your approval logic here
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Set the background color to green
+                    backgroundColor:
+                        Colors.green, // Set the background color to green
                   ),
                   child: const Text('Approve'),
                 ),
@@ -41,7 +42,8 @@ class ModerationPage extends StatelessWidget {
                     // Add your rejection logic here
                   },
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.red, // Set the background color to red
+                    backgroundColor:
+                        Colors.red, // Set the background color to red
                   ),
                   child: const Text('Reject'),
                 ),
