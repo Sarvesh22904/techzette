@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'upload_page.dart';
 import 'student_login_page.dart';
+import 'aboutus.dart'; // Make sure you have created this page
 
 class StudentHomePage extends StatefulWidget {
-  const StudentHomePage({Key? key});
+  const StudentHomePage({Key? key}) : super(key: key);
 
   @override
   _StudentHomePageState createState() => _StudentHomePageState();
@@ -13,7 +14,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
   void _handleUpload() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const UploadPage()),
+      MaterialPageRoute(builder: (context) => UploadPage()),
     );
   }
 
@@ -21,6 +22,13 @@ class _StudentHomePageState extends State<StudentHomePage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => StudentPage()),
+    );
+  }
+
+  void _handleAboutUs() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AboutUsPage()),
     );
   }
 
@@ -35,7 +43,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
         backgroundColor: Colors.orange,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -44,9 +52,9 @@ class _StudentHomePageState extends State<StudentHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 33, 166, 243),
+                color: Colors.orange,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,50 +63,50 @@ class _StudentHomePageState extends State<StudentHomePage> {
                   Text(
                     'Welcome!',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
                   Text(
                     'VCET TECHZETTE',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.share),
-              title: Text('Upload'),
+              leading: const Icon(Icons.share),
+              title: const Text('Upload'),
               onTap: _handleUpload,
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('About Us'),
-              onTap: () {},
+              leading: const Icon(Icons.info),
+              title: const Text('About Us'),
+              onTap: _handleAboutUs, // Call the _handleAboutUs method here
             ),
             ListTile(
-              leading: Icon(Icons.folder),
-              title: Text('Articles'),
+              leading: const Icon(Icons.folder),
+              title: const Text('Articles'),
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Logout'),
               onTap: _handleLogout,
             ),
           ],

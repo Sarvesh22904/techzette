@@ -20,7 +20,7 @@ class TechZettePage2 extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(
                 "assets/background_image.avif"), // Add your background image
@@ -31,14 +31,14 @@ class TechZettePage2 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Select your Role:",
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white), // Change text color to white
+                    color: Colors.black), // Change text color to white
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 50.0), // Add padding around the dropdown
@@ -77,7 +77,7 @@ class TechZettePage2 extends StatelessWidget {
                   hint: const Text(
                     "Select your Role",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white),
+                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   isExpanded: true,
                   underline: Container(
