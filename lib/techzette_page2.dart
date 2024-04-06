@@ -33,15 +33,15 @@ class TechZettePage2 extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: 50.0), // Add padding around the dropdown
               child: DropdownButton<String>(
-                items: [
-                  const DropdownMenuItem<String>(
+                items: const [
+                  DropdownMenuItem<String>(
                     value: "Moderator",
                     child: Text(
                       "Moderator",
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
-                  const DropdownMenuItem<String>(
+                  DropdownMenuItem<String>(
                     value: "Student",
                     child: Text(
                       "Student",
@@ -54,7 +54,7 @@ class TechZettePage2 extends StatelessWidget {
                   if (value == "Moderator") {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ModeratorPage()),
+                      MaterialPageRoute(builder: (context) => const ModeratorPage()),
                     );
                   } else if (value == "Student") {
                     Navigator.push(

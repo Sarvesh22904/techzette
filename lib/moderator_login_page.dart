@@ -3,7 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techzette/moderator_home_page.dart';
 
 class ModeratorPage extends StatefulWidget {
+  const ModeratorPage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ModeratorPageState createState() => _ModeratorPageState();
 }
 
@@ -21,7 +24,7 @@ class _ModeratorPageState extends State<ModeratorPage> {
         enteredEmail.isEmpty ||
         enteredPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Please enter all details")),
+        const SnackBar(content: Text("Please enter all details")),
       );
       return;
     }
@@ -43,13 +46,15 @@ class _ModeratorPageState extends State<ModeratorPage> {
       if (doc['Password'].toString() == enteredPassword &&
           doc['Role'].toString().toLowerCase() == enteredRole.toLowerCase()) {
         // Password matches and role is correct, navigate to the next page
+        // ignore: use_build_context_synchronously
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ModeratorHomePage()));
+            MaterialPageRoute(builder: (context) => const ModeratorHomePage()));
       } else {
         // Password does not match or role is incorrect
         throw Exception("Incorrect password or role.");
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );
@@ -116,12 +121,12 @@ class _ModeratorPageState extends State<ModeratorPage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: _tryLogin, // Use _tryLogin here
-                child: const Text('Enter'),
+                onPressed: _tryLogin,
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange,
-                  onPrimary: Colors.white,
-                ),
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.orange,
+                ), // Use _tryLogin here
+                child: const Text('Enter'),
               ),
             ],
           ),

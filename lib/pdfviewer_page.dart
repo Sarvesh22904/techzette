@@ -9,6 +9,7 @@ class PdfViewerPage extends StatefulWidget {
   const PdfViewerPage({Key? key, required this.url}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _PdfViewerPageState createState() => _PdfViewerPageState();
 }
 
@@ -40,7 +41,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View PDF'),
+        title: const Text('View PDF'),
       ),
       body: localPath != null
           ? PDFView(
@@ -56,7 +57,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
                 print('$page: ${error.toString()}');
               },
             )
-          : Center(
+          : const Center(
               child:
                   CircularProgressIndicator()), // Show loading indicator while downloading
     );

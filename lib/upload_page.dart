@@ -6,6 +6,8 @@ import 'pdfviewer_page.dart';
 import 'package:techzette/uploaded_file.dart';
 
 class UploadPage extends StatefulWidget {
+  const UploadPage({super.key});
+
   @override
   _UploadPageState createState() => _UploadPageState();
 }
@@ -41,7 +43,7 @@ class _UploadPageState extends State<UploadPage> {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No file selected')),
+          const SnackBar(content: Text('No file selected')),
         );
       }
     } catch (e) {
@@ -61,7 +63,7 @@ class _UploadPageState extends State<UploadPage> {
         backgroundColor: Colors.orange,
       ),
       body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 4.0,
           mainAxisSpacing: 4.0,
@@ -89,8 +91,8 @@ class _UploadPageState extends State<UploadPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: onUploadButtonPressed,
-        child: Icon(Icons.upload_file),
         backgroundColor: Colors.orange,
+        child: const Icon(Icons.upload_file),
       ),
     );
   }

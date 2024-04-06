@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ModerationPage extends StatelessWidget {
+  const ModerationPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

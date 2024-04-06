@@ -8,6 +8,8 @@ class StudentPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  StudentPage({super.key});
+
   // Function to handle login
   Future<void> _login(BuildContext context) async {
     try {
@@ -20,7 +22,7 @@ class StudentPage extends StatelessWidget {
       // If successful, navigate to the StudentHomePage
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => StudentHomePage()),
+        MaterialPageRoute(builder: (context) => const StudentHomePage()),
       );
     } on FirebaseAuthException catch (e) {
       // Show an error message if login fails
@@ -92,11 +94,10 @@ class StudentPage extends StatelessWidget {
                   // Call _login here
                   _login(context);
                 },
-                child: const Text('Enter'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange, // Button color
-                  onPrimary: Colors.white, // Text color
+                  foregroundColor: Colors.white, backgroundColor: Colors.orange, // Text color
                 ),
+                child: const Text('Enter'),
               ),
               const SizedBox(height: 20),
               Center(
@@ -120,7 +121,7 @@ class StudentPage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignupPage()),
+                                  builder: (context) => const SignupPage()),
                             );
                           },
                       ),

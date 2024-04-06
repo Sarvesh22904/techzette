@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'student_home_page.dart';
 
 class SignupPage extends StatefulWidget {
-  SignupPage({Key? key}) : super(key: key);
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -43,13 +43,13 @@ class _SignupPageState extends State<SignupPage> {
 
       // Show a success message before navigating
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registered Successfully')),
+        const SnackBar(content: Text('Registered Successfully')),
       );
 
       // Navigate to the StudentHomePage after a short delay
-      Future.delayed(Duration(seconds: 2), () {
+      Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => StudentHomePage()),
+          MaterialPageRoute(builder: (context) => const StudentHomePage()),
         );
       });
     } on FirebaseAuthException catch (e) {
@@ -151,9 +151,9 @@ class _SignupPageState extends State<SignupPage> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  child: Text('Enter'),
                   onPressed: _trySubmitForm,
-                  style: ElevatedButton.styleFrom(primary: Colors.orange),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                  child: const Text('Enter'),
                 ),
               ],
             ),

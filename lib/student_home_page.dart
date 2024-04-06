@@ -3,6 +3,8 @@ import 'upload_page.dart';
 import 'student_login_page.dart';
 
 class StudentHomePage extends StatefulWidget {
+  const StudentHomePage({super.key});
+
   @override
   _StudentHomePageState createState() => _StudentHomePageState();
 }
@@ -14,7 +16,7 @@ class _StudentHomePageState extends State<StudentHomePage> {
       case 'Upload':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UploadPage()),
+          MaterialPageRoute(builder: (context) => const UploadPage()),
         );
         break;
       case 'Logout':

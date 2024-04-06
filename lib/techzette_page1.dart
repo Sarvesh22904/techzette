@@ -28,22 +28,30 @@ class TechzettePage1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
+                'assets/techzette.png',
+                height: 200,
+                width: 400,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Image.asset(
                 'assets/vcet-logo.jpeg',
                 height: 200,
                 width: 200,
               ),
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
+              const SizedBox(height: 10),
               const Text(
                 "Welcome to Techzette",
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 3, 1, 14),
+                  fontSize: 30,
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 50),
               const Text(
                 "Tap to Continue",
                 style: TextStyle(

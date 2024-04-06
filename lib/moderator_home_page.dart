@@ -3,7 +3,10 @@ import 'moderation_page.dart';
 import 'moderator_login_page.dart';
 
 class ModeratorHomePage extends StatefulWidget {
+  const ModeratorHomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _ModeratorHomePageState createState() => _ModeratorHomePageState();
 }
 
@@ -14,14 +17,14 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
       case 'Moderation':
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ModerationPage()),
+          MaterialPageRoute(builder: (context) => const ModerationPage()),
         );
         break;
       case 'Logout':
         // Navigate to the ModeratorLoginPage
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => ModeratorPage()),
+          MaterialPageRoute(builder: (context) => const ModeratorPage()),
         );
         break;
       default:
