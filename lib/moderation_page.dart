@@ -13,8 +13,42 @@ class ModerationPage extends StatelessWidget {
         ),
         backgroundColor: Colors.orange,
       ),
-      body: const Center(
-        child: Text("Welcome to the Moderation Page!"),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0), // Adds padding around the column
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Expanded(
+              child: Center(
+                child: Text("Welcome to the Moderation Page!"),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .spaceEvenly, // Centers the buttons horizontally
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // Add your approval logic here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // Set the background color to green
+                  ),
+                  child: const Text('Approve'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Add your rejection logic here
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // Set the background color to red
+                  ),
+                  child: const Text('Reject'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
