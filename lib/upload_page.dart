@@ -3,20 +3,21 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_auth/firebase_auth.dart';
 import 'pdfviewer_page.dart';
-import 'package:techzette/uploaded_file.dart';
+import 'package:techzette/uploaded_file.dart'; // Ensure this import is correct for your project structure
 
 class UploadPage extends StatefulWidget {
   const UploadPage({super.key});
 
   @override
-  _UploadPageState createState() => _UploadPageState();
+  State<UploadPage> createState() => _UploadPageState();
 }
 
 class _UploadPageState extends State<UploadPage> {
   bool _isUploading = false;
   final user = FirebaseAuth.instance.currentUser; // Get the current user
+  List<UploadedFile> uploadedFiles = []; // Placeholder for files list
 
   @override
   void initState() {
@@ -86,8 +87,15 @@ class _UploadPageState extends State<UploadPage> {
   }
 
   Future<void> fetchUploadedFiles() async {
-    // This method needs modification to filter files based on the current user.
-    // However, as it's not being actively used in the UI, we'll focus on the StreamBuilder query adjustment.
+    // This method should ideally fetch files based on the current user.
+    // However, since its implementation isn't provided, it's left as a placeholder.
+  }
+
+  Future<void> _refreshData() async {
+    // Refresh logic goes here. For Firestore real-time updates, this might not do anything.
+    // In a real app with non-real-time data, you would call setState or your data fetching function here.
+    await Future.delayed(Duration(seconds: 1)); // Simulate a delay
+    // fetchUploadedFiles(); Uncomment if you implement this method.
   }
 
   @override
@@ -105,6 +113,7 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     return Scaffold(
+<<<<<<< HEAD
         appBar: AppBar(
           title: const Text('Upload',
               style:
@@ -116,15 +125,32 @@ class _UploadPageState extends State<UploadPage> {
                 child:
                     CircularProgressIndicator()) // Use CircularProgressIndicator for uploading state
             : StreamBuilder<QuerySnapshot>(
+=======
+      appBar: AppBar(
+        title: const Text('Upload',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        backgroundColor: Colors.orange,
+      ),
+      body: _isUploading
+          ? const Center(child: CircularProgressIndicator())
+          : RefreshIndicator(
+              onRefresh: _refreshData,
+              child: StreamBuilder<QuerySnapshot>(
+>>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                 stream: FirebaseFirestore.instance
                     .collection('uploaded_pdfs')
                     .where('uid', isEqualTo: user!.uid)
                     .snapshots(),
                 builder: (context, snapshot) {
+<<<<<<< HEAD
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
+=======
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+>>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                   } else {
                     var documents = snapshot.data!.docs;
                     return GridView.builder(
@@ -151,7 +177,11 @@ class _UploadPageState extends State<UploadPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Image.asset(
+<<<<<<< HEAD
                                         'assets/pdfLogo1.png'), // PDF logo
+=======
+                                        'assets/pdfLogo.png'), // Ensure this asset exists
+>>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                                   ),
                                 ),
                                 Text(
@@ -169,11 +199,21 @@ class _UploadPageState extends State<UploadPage> {
                   }
                 },
               ),
+<<<<<<< HEAD
         floatingActionButton: FloatingActionButton(
           onPressed: onUploadButtonPressed,
           backgroundColor: Colors.orange,
           child: const Icon(Icons.upload_file),
         ));
     // ignore: dead_code
+=======
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onUploadButtonPressed,
+        backgroundColor: Colors.orange,
+        child: const Icon(Icons.upload_file),
+      ),
+    );
+>>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
   }
 }
