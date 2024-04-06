@@ -28,35 +28,31 @@ class TechzettePage1 extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/techzette.png',
-                height: 200,
-                width: 400,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Image.asset(
                 'assets/vcet-logo.jpeg',
                 height: 200,
                 width: 200,
               ),
-              const SizedBox(
-                height: 50,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                "Welcome to Techzette",
-                style: TextStyle(
-                  color: Color.fromARGB(255, 3, 1, 14),
-                  fontSize: 30,
+              const Padding(
+                padding:
+                    EdgeInsets.only(top: 32), // Adjust the padding as needed
+                child: Text(
+                  "Welcome to Techzette",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 3, 1, 14),
+                    fontSize: 30,
+                  ),
                 ),
               ),
-              const SizedBox(height: 50),
-              const Text(
-                "Tap to Continue",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontSize: 20,
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 32), // Adjust the padding as needed
+                child: ElevatedButton(
+                  onPressed: () => _navigateToNextPage(context),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.orange, // Button color
+                    onPrimary: Colors.white, // Text color
+                  ),
+                  child: const Text("Tap to Continue"),
                 ),
               ),
             ],
