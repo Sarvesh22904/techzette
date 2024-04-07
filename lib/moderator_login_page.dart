@@ -1,62 +1,41 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techzette/moderator_home_page.dart';
+import 'package:techzette/signupmod.dart';
 
-class ModeratorPage extends StatefulWidget {
-  const ModeratorPage({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _ModeratorPageState createState() => _ModeratorPageState();
-}
-
-class _ModeratorPageState extends State<ModeratorPage> {
-  final TextEditingController _roleController = TextEditingController();
+class ModeratorPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _tryLogin() async {
-    final String enteredRole = _roleController.text.trim();
-    final String enteredEmail = _emailController.text.trim();
-    final String enteredPassword = _passwordController.text.trim();
+  ModeratorPage({super.key});
 
-    if (enteredRole.isEmpty ||
-        enteredEmail.isEmpty ||
-        enteredPassword.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Please enter all details")),
-      );
-      return;
-    }
-
+  // Function to handle login
+  Future<void> _login(BuildContext context) async {
     try {
-      // Query Firestore for a moderator with the entered email
-      final querySnapshot = await FirebaseFirestore.instance
-          .collection('Moderators')
-          .where('Email', isEqualTo: enteredEmail)
-          .get();
+      // Attempt to sign in with email and password
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
 
-      if (querySnapshot.docs.isEmpty) {
-        // No matching email found
-        throw Exception("No matching user found.");
+      // If successful, navigate to the StudentHomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ModeratorHomePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Show an error message if login fails
+      var errorMessage = 'An error occurred, please try again.';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found, please sign-up.';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Wrong password, please try again.';
       }
-
-      final doc = querySnapshot.docs.first;
-
-      if (doc['Password'].toString() == enteredPassword &&
-          doc['Role'].toString().toLowerCase() == enteredRole.toLowerCase()) {
-        // Password matches and role is correct, navigate to the next page
-        // ignore: use_build_context_synchronously
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ModeratorHomePage()));
-      } else {
-        // Password does not match or role is incorrect
-        throw Exception("Incorrect password or role.");
-      }
-    } catch (e) {
-      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        SnackBar(
+          content: Text(errorMessage),
+        ),
       );
     }
   }
@@ -77,56 +56,79 @@ class _ModeratorPageState extends State<ModeratorPage> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.only(bottom: 20.0),
-                child: Text(
-                  "Login",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            children: [
+              const Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  controller: _roleController, // Connect the controller
-                  decoration: const InputDecoration(
-                    labelText: 'Enter Your Role',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
+              const SizedBox(height: 20),
+              TextField(
+                controller: _emailController, // Use controller for email input
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  prefixIcon: const Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  controller: _emailController, // Connect the controller
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
+              const SizedBox(height: 20),
+              TextField(
+                controller:
+                    _passwordController, // Use controller for password input
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  prefixIcon: const Icon(Icons.lock),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                  keyboardType: TextInputType.emailAddress,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: TextFormField(
-                  controller: _passwordController, // Connect the controller
-                  decoration: const InputDecoration(
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock),
-                  ),
-                  obscureText: true,
-                ),
-              ),
+              const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: _tryLogin,
+                onPressed: () {
+                  // Call _login here
+                  _login(context);
+                },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.orange,
-                ), // Use _tryLogin here
+                  backgroundColor: Colors.orange, // Text color
+                ),
                 child: const Text('Enter'),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    text: 'New user? ',
+                    style: const TextStyle(
+                      fontSize: 16.0,
+                      color: Colors.black,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: 'Signup',
+                        style: const TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignupPage()),
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

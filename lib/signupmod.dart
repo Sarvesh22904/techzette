@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'student_home_page.dart';
+import 'moderator_home_page.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -12,8 +12,8 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
-  List<String> years = ['FE', 'SE', 'TE', 'BE'];
-  final TextEditingController _studentIdController = TextEditingController();
+
+  final TextEditingController _roleController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -36,7 +36,7 @@ class _SignupPageState extends State<SignupPage> {
           .collection('users')
           .doc(userCredential.user!.uid)
           .set({
-        'studentId': _studentIdController.text.trim(),
+        'role': _roleController.text.trim(),
         'fullName': _fullNameController.text.trim(),
         'year': _selectedYear,
       });
@@ -49,7 +49,7 @@ class _SignupPageState extends State<SignupPage> {
       // Navigate to the StudentHomePage after a short delay
       Future.delayed(const Duration(seconds: 2), () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const StudentHomePage()),
+          MaterialPageRoute(builder: (context) => const ModeratorHomePage()),
         );
       });
     } on FirebaseAuthException catch (e) {
@@ -78,13 +78,13 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  controller: _studentIdController,
+                  controller: _roleController,
                   decoration: const InputDecoration(
-                    labelText: 'Student ID',
+                    labelText: 'Role',
                   ),
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter your Student ID';
+                      return 'Please enter your Role';
                     }
                     return null;
                   },
@@ -101,26 +101,6 @@ class _SignupPageState extends State<SignupPage> {
                     }
                     return null;
                   },
-                ),
-                const SizedBox(height: 20),
-                DropdownButtonFormField<String>(
-                  value: _selectedYear,
-                  decoration: const InputDecoration(
-                    labelText: 'Year',
-                  ),
-                  items: years.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedYear = newValue;
-                    });
-                  },
-                  validator: (value) =>
-                      value == null ? 'Please select your year' : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(

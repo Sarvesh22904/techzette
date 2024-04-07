@@ -113,7 +113,6 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     return Scaffold(
-<<<<<<< HEAD
         appBar: AppBar(
           title: const Text('Upload',
               style:
@@ -125,32 +124,15 @@ class _UploadPageState extends State<UploadPage> {
                 child:
                     CircularProgressIndicator()) // Use CircularProgressIndicator for uploading state
             : StreamBuilder<QuerySnapshot>(
-=======
-      appBar: AppBar(
-        title: const Text('Upload',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        backgroundColor: Colors.orange,
-      ),
-      body: _isUploading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _refreshData,
-              child: StreamBuilder<QuerySnapshot>(
->>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                 stream: FirebaseFirestore.instance
                     .collection('uploaded_pdfs')
                     .where('uid', isEqualTo: user!.uid)
                     .snapshots(),
                 builder: (context, snapshot) {
-<<<<<<< HEAD
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
-=======
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
->>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                   } else {
                     var documents = snapshot.data!.docs;
                     return GridView.builder(
@@ -177,11 +159,7 @@ class _UploadPageState extends State<UploadPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Image.asset(
-<<<<<<< HEAD
                                         'assets/pdfLogo1.png'), // PDF logo
-=======
-                                        'assets/pdfLogo.png'), // Ensure this asset exists
->>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
                                   ),
                                 ),
                                 Text(
@@ -199,21 +177,11 @@ class _UploadPageState extends State<UploadPage> {
                   }
                 },
               ),
-<<<<<<< HEAD
         floatingActionButton: FloatingActionButton(
           onPressed: onUploadButtonPressed,
           backgroundColor: Colors.orange,
           child: const Icon(Icons.upload_file),
         ));
     // ignore: dead_code
-=======
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onUploadButtonPressed,
-        backgroundColor: Colors.orange,
-        child: const Icon(Icons.upload_file),
-      ),
-    );
->>>>>>> 1b18127b67649a4f1d437fd4c9e406e0faf6ec60
   }
 }

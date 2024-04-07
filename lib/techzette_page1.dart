@@ -27,16 +27,21 @@ class TechzettePage1 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset(
-                'assets/vcet-logo.jpeg',
-                height: 200,
-                width: 200,
+              Container(
+                margin: EdgeInsets.only(
+                    top:
+                        100), // Adjust the top margin to move the image up or down
+                child: Image.asset(
+                  'assets/logo.png',
+                  height: 500,
+                  width: 700,
+                ),
               ),
               const Padding(
                 padding:
-                    EdgeInsets.only(top: 32), // Adjust the padding as needed
+                    EdgeInsets.only(top: 10), // Adjust the padding as needed
                 child: Text(
-                  "Welcome to Techzette",
+                  "Welcome to Techzette !!!",
                   style: TextStyle(
                     color: Color.fromARGB(255, 3, 1, 14),
                     fontSize: 30,
@@ -49,8 +54,8 @@ class TechzettePage1 extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => _navigateToNextPage(context),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.orange, // Button color
-                    onPrimary: Colors.white, // Text color
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.orange, // Text color
                   ),
                   child: const Text("Tap to Continue"),
                 ),

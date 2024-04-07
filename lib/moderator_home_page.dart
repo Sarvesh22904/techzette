@@ -3,33 +3,25 @@ import 'moderation_page.dart';
 import 'moderator_login_page.dart';
 
 class ModeratorHomePage extends StatefulWidget {
-  const ModeratorHomePage({super.key});
+  const ModeratorHomePage({Key? key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ModeratorHomePageState createState() => _ModeratorHomePageState();
 }
 
 class _ModeratorHomePageState extends State<ModeratorHomePage> {
-  // Function to handle menu option selection
-  void _handleMenuSelection(String value) {
-    switch (value) {
-      case 'Moderation':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ModerationPage()),
-        );
-        break;
-      case 'Logout':
-        // Navigate to the ModeratorLoginPage
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const ModeratorPage()),
-        );
-        break;
-      default:
-        break;
-    }
+  void _handleModeration() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ModerationPage()),
+    );
+  }
+
+  void _handleLogout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => ModeratorPage()),
+    );
   }
 
   @override
@@ -42,26 +34,73 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
         ),
         backgroundColor: Colors.orange,
         actions: <Widget>[
-          PopupMenuButton<String>(
-            onSelected: _handleMenuSelection,
-            itemBuilder: (BuildContext context) {
-              return [
-                const PopupMenuItem<String>(
-                  value: 'Moderation',
-                  child: Text('Moderation'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'Logout',
-                  child: Text('Logout'),
-                ),
-              ];
-            },
-            icon: const Icon(Icons.more_vert, color: Colors.black),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
           ),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 33, 166, 243),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Welcome!',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Your App Name',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.account_circle),
+              title: Text('Profile'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.assignment_turned_in),
+              title: Text('Moderation'),
+              onTap: _handleModeration,
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About Us'),
+              onTap: () {},
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: _handleLogout,
+            ),
+          ],
+        ),
+      ),
       body: const Center(
-        child: Text("Welcome to the Moderator Home Page!!!!"),
+        child: Text("Welcome to the Moderator Home Page!"),
       ),
     );
   }

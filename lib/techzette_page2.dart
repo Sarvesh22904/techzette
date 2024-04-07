@@ -65,7 +65,7 @@ class TechZettePage2 extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ModeratorPage()),
+                            builder: (context) => ModeratorPage()),
                       );
                     } else if (value == "Student") {
                       Navigator.push(
