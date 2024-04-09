@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
+import 'package:firebase_auth/firebase_auth.dart';
 import 'pdfviewer_page.dart';
 import 'package:techzette/uploaded_file.dart';
 
@@ -103,7 +103,6 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     return Scaffold(
-<<<<<<< HEAD
         appBar: AppBar(
           title: const Text('Upload',
               style:
@@ -137,78 +136,30 @@ class _UploadPageState extends State<UploadPage> {
                       itemBuilder: (context, index) {
                         var doc = documents[index];
                         return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  PdfViewerPage(url: doc['url']),
-                            ));
-                          },
-                          child: Card(
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                        'assets/pdfLogo1.png'), // PDF logo
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    PdfViewerPage(url: doc['url']),
+                              ));
+                            },
+                            child: Card(
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Image.asset('assets/pdfLogo1.png'),
+                                    ),
                                   ),
-=======
-      appBar: AppBar(
-        title: const Text('Upload',
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-        backgroundColor: Colors.orange,
-      ),
-      body: _isUploading
-          ? const Center(child: CircularProgressIndicator())
-          : StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('uploaded_pdfs')
-                  .where('uid',
-                      isEqualTo: user!.uid) // Filter by the current user's UID
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  var documents = snapshot.data!.docs;
-                  return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 4.0,
-                      mainAxisSpacing: 4.0,
-                    ),
-                    itemCount: documents.length,
-                    itemBuilder: (context, index) {
-                      var doc = documents[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                PdfViewerPage(url: doc['url']),
-                          ));
-                        },
-                        child: Card(
-                          child: Column(
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Image.asset(
-                                      'assets/pdfLogo1.png'), // PDF logo
->>>>>>> c8e51e5d8f38b6f9a5e4e65760683fd364ce82e9
-                                ),
+                                  Text(
+                                    doc['name'],
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 14.0),
+                                  ),
+                                  const SizedBox(height: 10),
+                                ],
                               ),
-                              Text(
-                                doc['name'],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 14.0),
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-<<<<<<< HEAD
-                        );
+                            ));
                       },
                     );
                   }
@@ -220,20 +171,5 @@ class _UploadPageState extends State<UploadPage> {
           child: const Icon(Icons.upload_file),
         ));
     // ignore: dead_code
-=======
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: onUploadButtonPressed,
-        child: const Icon(Icons.upload_file),
-        backgroundColor: Colors.orange,
-      ),
-    );
->>>>>>> c8e51e5d8f38b6f9a5e4e65760683fd364ce82e9
   }
 }
