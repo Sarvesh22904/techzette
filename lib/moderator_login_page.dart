@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techzette/moderator_home_page.dart';
-import 'package:techzette/signupmod.dart';
 
 class ModeratorPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
@@ -99,36 +98,6 @@ class ModeratorPage extends StatelessWidget {
                   backgroundColor: Colors.orange, // Text color
                 ),
                 child: const Text('Enter'),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    text: 'New user? ',
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      color: Colors.black,
-                    ),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Signup',
-                        style: const TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignupPage()),
-                            );
-                          },
-                      ),
-                    ],
-                  ),
-                ),
               ),
             ],
           ),

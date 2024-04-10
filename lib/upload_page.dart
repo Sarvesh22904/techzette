@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'pdfviewer_page.dart';
 import 'package:techzette/uploaded_file.dart';
 
@@ -32,7 +32,7 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     setState(() {
-      _isUploading = true; // Start the upload process
+      _isUploading = true;
     });
 
     try {
@@ -46,20 +46,22 @@ class _UploadPageState extends State<UploadPage> {
         File pdfFile = File(file.path!);
         String fileName = file.name;
 
-        String filePath =
-            'articles/${user!.uid}/$fileName'; // Include the user's UID in the path
+        String filePath = 'articles/${user!.uid}/$fileName';
         Reference ref = FirebaseStorage.instance.ref().child(filePath);
 
         UploadTask uploadTask = ref.putFile(pdfFile);
         final TaskSnapshot downloadUrl = (await uploadTask);
         final String url = await downloadUrl.ref.getDownloadURL();
 
-        // Save PDF metadata to Firestore with user's UID
+        // Save PDF metadata to Firestore with user's UID and mark as pending approval
         await FirebaseFirestore.instance.collection('uploaded_pdfs').add({
           'url': url,
           'name': fileName,
-          'uid': user!.uid, // Include the user's UID
+          'uid': user!.uid,
+          'email':
+              user!.email ?? 'No email provided', // Include the user's email
           'timestamp': FieldValue.serverTimestamp(),
+          'isApproved': false, // Mark as pending approval
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -77,9 +79,9 @@ class _UploadPageState extends State<UploadPage> {
       );
     } finally {
       setState(() {
-        _isUploading = false; // End the upload process
+        _isUploading = false;
       });
-      fetchUploadedFiles(); // Refresh the list after upload
+      fetchUploadedFiles();
     }
   }
 
@@ -103,73 +105,71 @@ class _UploadPageState extends State<UploadPage> {
     }
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Upload',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-          backgroundColor: Colors.orange,
-        ),
-        body: _isUploading
-            ? Center(
-                child:
-                    CircularProgressIndicator()) // Use CircularProgressIndicator for uploading state
-            : StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('uploaded_pdfs')
-                    .where('uid', isEqualTo: user!.uid)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else {
-                    var documents = snapshot.data!.docs;
-                    return GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 4.0,
-                        mainAxisSpacing: 4.0,
-                      ),
-                      itemCount: documents.length,
-                      itemBuilder: (context, index) {
-                        var doc = documents[index];
-                        return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    PdfViewerPage(url: doc['url']),
-                              ));
-                            },
-                            child: Card(
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Image.asset('assets/pdfLogo1.png'),
-                                    ),
-                                  ),
-                                  Text(
-                                    doc['name'],
-                                    textAlign: TextAlign.center,
-                                    style: const TextStyle(fontSize: 14.0),
-                                  ),
-                                  const SizedBox(height: 10),
-                                ],
+      appBar: AppBar(
+        title: const Text('Upload',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+        backgroundColor: Colors.orange,
+      ),
+      body: _isUploading
+          ? const Center(child: CircularProgressIndicator())
+          : StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('uploaded_pdfs')
+                  .where('uid',
+                      isEqualTo: user!.uid) // Filter by the current user's UID
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  var documents = snapshot.data!.docs;
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 4.0,
+                    ),
+                    itemCount: documents.length,
+                    itemBuilder: (context, index) {
+                      var doc = documents[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                PdfViewerPage(url: doc['url']),
+                          ));
+                        },
+                        child: Card(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Image.asset(
+                                      'assets/pdfLogo1.png'), // PDF logo
+                                ),
                               ),
-                            ));
-                      },
-                    );
-                  }
-                },
-              ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: onUploadButtonPressed,
-          backgroundColor: Colors.orange,
-          child: const Icon(Icons.upload_file),
-        ));
-    // ignore: dead_code
+                              Text(
+                                doc['name'],
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontSize: 14.0),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: onUploadButtonPressed,
+        child: const Icon(Icons.upload_file),
+        backgroundColor: Colors.orange,
+      ),
+    );
   }
 }

@@ -19,51 +19,49 @@ class TechzettePage1 extends StatelessWidget {
         backgroundColor: Colors.orange,
         centerTitle: true,
       ),
-      body: GestureDetector(
-        onTap: () {
-          _navigateToNextPage(context);
-        },
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                margin: EdgeInsets.only(
-                    top:
-                        100), // Adjust the top margin to move the image up or down
-                child: Image.asset(
-                  'assets/logo.png',
-                  height: 500,
-                  width: 700,
-                ),
-              ),
-              const Padding(
-                padding:
-                    EdgeInsets.only(top: 10), // Adjust the padding as needed
-                child: Text(
-                  "Welcome to Techzette !!!",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 3, 1, 14),
-                    fontSize: 30,
+      body: LayoutBuilder(builder: (context, constraints) {
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: IntrinsicHeight(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Image.asset(
+                        'assets/logo.png',
+                        height: 250, // Adjust the size as needed
+                        width: 350,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 32), // Adjust the padding as needed
-                child: ElevatedButton(
-                  onPressed: () => _navigateToNextPage(context),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.orange, // Text color
+                  const Text(
+                    "Welcome to Techzette !!!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 3, 1, 14),
+                      fontSize: 24, // Adjusted font size for better fit
+                    ),
                   ),
-                  child: const Text("Tap to Continue"),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 20.0, bottom: 20.0), // Adjust as needed
+                    child: ElevatedButton(
+                      onPressed: () => _navigateToNextPage(context),
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.orange,
+                      ),
+                      child: const Text("Tap to Continue"),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 

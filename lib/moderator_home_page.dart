@@ -35,7 +35,7 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
         backgroundColor: Colors.orange,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
@@ -44,9 +44,9 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 33, 166, 243),
+                color: Colors.orange,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,45 +55,45 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
                   Text(
                     'Welcome!',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Your App Name',
+                    'Techzette',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
+                        color: Colors.black,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.assignment_turned_in),
-              title: Text('Moderation'),
+              leading: const Icon(Icons.assignment_turned_in),
+              title: const Text('Moderation'),
               onTap: _handleModeration,
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('About Us'),
+              leading: const Icon(Icons.info),
+              title: const Text('About Us'),
               onTap: () {},
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Logout'),
               onTap: _handleLogout,
             ),
           ],
