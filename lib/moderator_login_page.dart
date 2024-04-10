@@ -1,42 +1,69 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:techzette/moderator_home_page.dart';
 
 class ModeratorPage extends StatelessWidget {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  ModeratorPage({super.key});
+  ModeratorPage({Key? key}) : super(key: key);
 
-  // Function to handle login
   Future<void> _login(BuildContext context) async {
-    try {
-      // Attempt to sign in with email and password
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
 
-      // If successful, navigate to the StudentHomePage
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ModeratorHomePage()),
-      );
-    } on FirebaseAuthException catch (e) {
-      // Show an error message if login fails
-      var errorMessage = 'An error occurred, please try again.';
-      if (e.code == 'user-not-found') {
-        errorMessage = 'No user found, please sign-up.';
-      } else if (e.code == 'wrong-password') {
-        errorMessage = 'Wrong password, please try again.';
+    try {
+      // Check if the user is a moderator
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('Moderators')
+          .where('Email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // User exists in moderators collection, attempt to sign in
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        // If successful, navigate to ModeratorHomePage
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ModeratorHomePage()),
+        );
+      } else {
+        // User is not a moderator
+        _showErrorSnackBar(
+            context, "Unauthorized access. Only moderators can log in.");
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
-        ),
-      );
+    } on FirebaseAuthException catch (e) {
+      _handleAuthError(context, e);
     }
+  }
+
+  void _showErrorSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
+  }
+
+  void _handleAuthError(BuildContext context, FirebaseAuthException e) {
+    String errorMessage = 'An error occurred, please try again.';
+    switch (e.code) {
+      case 'user-not-found':
+        errorMessage = 'No user found for that email.';
+        break;
+      case 'wrong-password':
+        errorMessage = 'Wrong password provided.';
+        break;
+      default:
+        break;
+    }
+
+    _showErrorSnackBar(context, errorMessage);
   }
 
   @override
@@ -65,7 +92,7 @@ class ModeratorPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: _emailController, // Use controller for email input
+                controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   prefixIcon: const Icon(Icons.email),
@@ -76,8 +103,7 @@ class ModeratorPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller:
-                    _passwordController, // Use controller for password input
+                controller: _passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -89,15 +115,12 @@ class ModeratorPage extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               ElevatedButton(
-                onPressed: () {
-                  // Call _login here
-                  _login(context);
-                },
+                onPressed: () => _login(context),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.orange, // Text color
+                  backgroundColor: Colors.orange,
                 ),
-                child: const Text('Enter'),
+                child: const Text('Login'),
               ),
             ],
           ),

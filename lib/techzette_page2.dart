@@ -77,8 +77,7 @@ class TechZettePage2 extends StatelessWidget {
                   hint: const Text(
                     "Select your Role",
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 245, 242, 242)),
+                        fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   isExpanded: true,
                   underline: Container(

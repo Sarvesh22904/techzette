@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
-class ModerationPage extends StatelessWidget {
+class ModerationPage extends StatefulWidget {
   const ModerationPage({super.key});
 
+  @override
+  State<ModerationPage> createState() => _ModerationPageState();
+}
+
+class _ModerationPageState extends State<ModerationPage> {
   void updateApprovalStatus(String docId, bool isApproved) async {
     await FirebaseFirestore.instance
         .collection('uploaded_pdfs')
@@ -11,6 +17,18 @@ class ModerationPage extends StatelessWidget {
         .update({
       'isApproved': isApproved,
     });
+  }
+
+  void viewPdf(String? pdfUrl) async {
+    if (pdfUrl != null && await canLaunchUrlString(pdfUrl)) {
+      launchUrlString(pdfUrl, mode: LaunchMode.externalApplication);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Could not launch PDF or PDF URL is missing'),
+        ),
+      );
+    }
   }
 
   @override
@@ -37,6 +55,10 @@ class ModerationPage extends StatelessWidget {
             itemCount: documents.length,
             itemBuilder: (context, index) {
               var doc = documents[index];
+
+              // **Handle potential absence of "pdfUrl" field**
+              String? pdfUrl = doc['pdfUrl']?.toString();
+
               return ListTile(
                 title: Text(doc['name']),
                 subtitle: Text("Uploaded by: ${doc['uid']}"),
@@ -50,6 +72,10 @@ class ModerationPage extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.close, color: Colors.red),
                       onPressed: () => updateApprovalStatus(doc.id, false),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.remove_red_eye),
+                      onPressed: () => viewPdf(pdfUrl),
                     ),
                   ],
                 ),
