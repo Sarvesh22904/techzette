@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:http/http.dart' as http;
 import 'package:html/parser.dart' as parser;
+import 'package:techzette/articles_page.dart';
 import 'abouttheinstitute.dart';
 import 'aboutthedep.dart';
 import 'aboutmagzine.dart';
@@ -94,19 +95,10 @@ class StudentHomePage extends StatelessWidget {
                 ),
               ],
             ),
-            ExpansionTile(
+            ListTile(
               leading: Icon(Icons.folder),
               title: Text("Articles"),
-              children: [
-                ListTile(
-                  title: Text("Categories"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  title: Text("Archives"),
-                  onTap: () {},
-                ),
-              ],
+              onTap: () => _handleArticles(context),
             ),
             Divider(),
             ListTile(
@@ -228,7 +220,17 @@ class StudentHomePage extends StatelessWidget {
   void _handleAbouttheMag(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AbouttheMag()),
+      MaterialPageRoute(builder: (context) => const AbouttheMag()),
+    );
+  }
+
+  void _handleArticles(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => const ArticlesPage(
+                pdfUrls: [],
+              )),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:techzette/articles_page.dart';
 import 'moderation_page.dart';
 import 'moderator_login_page.dart';
 
@@ -90,13 +91,26 @@ class _ModeratorHomePageState extends State<ModeratorHomePage> {
               title: const Text('About Us'),
               onTap: () {},
             ),
+            ListTile(
+              leading: const Icon(Icons.article),
+              title: const Text('Articles'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ArticlesPage(
+                            pdfUrls: [],
+                          )),
+                );
+              },
+            ),
             const Divider(),
             ListTile(
               leading: const Icon(Icons.exit_to_app),
               title: const Text('Logout'),
               onTap: _handleLogout,
             ),
-          ],
+          ], // Remove the extra parenthesis here
         ),
       ),
       body: const Center(
