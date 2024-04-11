@@ -36,7 +36,7 @@ class StudentHomePage extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.orange,
               ),
@@ -63,47 +63,47 @@ class StudentHomePage extends StatelessWidget {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.home),
-              title: Text('Home'),
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
               onTap: () {},
             ),
             ListTile(
-              leading: Icon(Icons.share),
-              title: Text('Upload'),
+              leading: const Icon(Icons.share),
+              title: const Text('Upload'),
               onTap: () => _handleUpload(context),
             ),
             ExpansionTile(
-              leading: Icon(Icons.info),
-              title: Text("About Us"),
+              leading: const Icon(Icons.info),
+              title: const Text("About Us"),
               children: [
                 ListTile(
-                  title: Text("About the Institute"),
+                  title: const Text("About the Institute"),
                   onTap: () => _handleAbouttheinstitute(context),
                 ),
                 ListTile(
-                  title: Text("About the Department"),
+                  title: const Text("About the Department"),
                   onTap: () => _handleAbouttheDep(context),
                 ),
                 ListTile(
-                  title: Text("About the Magazine"),
+                  title: const Text("About the Magazine"),
                   onTap: () => _handleAbouttheMag(context),
                 ),
               ],
             ),
             ListTile(
-              leading: Icon(Icons.folder),
-              title: Text("Articles"),
+              leading: const Icon(Icons.folder),
+              title: const Text("Articles"),
               onTap: () => _handleArticles(context),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: Text('Logout'),
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Logout'),
               onTap: () => _handleLogout(context),
             ),
           ],
@@ -206,14 +206,14 @@ class StudentHomePage extends StatelessWidget {
   void _handleAbouttheinstitute(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Abouttheinstitute()),
+      MaterialPageRoute(builder: (context) => const Abouttheinstitute()),
     );
   }
 
   void _handleAbouttheDep(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AbouttheDep()),
+      MaterialPageRoute(builder: (context) => const AbouttheDep()),
     );
   }
 

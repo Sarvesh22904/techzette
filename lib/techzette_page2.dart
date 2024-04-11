@@ -13,7 +13,7 @@ class TechZettePage2 extends StatelessWidget {
           "VCET Techzette",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.black, // Make the text black
+            color: Colors.black,
           ),
         ),
         backgroundColor: Colors.orange,
@@ -22,8 +22,7 @@ class TechZettePage2 extends StatelessWidget {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/background_image.avif"), // Add your background image
+            image: AssetImage("assets/background_image.avif"),
             fit: BoxFit.cover,
           ),
         ),
@@ -36,12 +35,11 @@ class TechZettePage2 extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black), // Change text color to white
+                    color: Colors.black),
               ),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 50.0), // Add padding around the dropdown
+                padding: const EdgeInsets.symmetric(horizontal: 50.0),
                 child: DropdownButton<String>(
                   items: const [
                     DropdownMenuItem<String>(
@@ -60,7 +58,6 @@ class TechZettePage2 extends StatelessWidget {
                     ),
                   ],
                   onChanged: (String? value) {
-                    // Handle dropdown value change
                     if (value == "Moderator") {
                       Navigator.push(
                         context,

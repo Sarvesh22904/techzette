@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:techzette/techzette_page2.dart'; // Import your next page file
+import 'package:techzette/techzette_page2.dart';
 
 class TechzettePage1 extends StatelessWidget {
   const TechzettePage1({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class TechzettePage1 extends StatelessWidget {
                     child: Center(
                       child: Image.asset(
                         'assets/logo.png',
-                        height: 250, // Adjust the size as needed
+                        height: 250,
                         width: 350,
                       ),
                     ),
@@ -41,12 +41,11 @@ class TechzettePage1 extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color.fromARGB(255, 3, 1, 14),
-                      fontSize: 24, // Adjusted font size for better fit
+                      fontSize: 24,
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(
-                        top: 20.0, bottom: 20.0), // Adjust as needed
+                    padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
                     child: ElevatedButton(
                       onPressed: () => _navigateToNextPage(context),
                       style: ElevatedButton.styleFrom(
